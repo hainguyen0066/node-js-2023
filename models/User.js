@@ -33,6 +33,5 @@ export default mongoose.model('User',
             type: String,
             required: false,
         },
-
     })
 )
