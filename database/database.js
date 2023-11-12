@@ -9,8 +9,6 @@ async function connect() {
         print('connect success', OutputType.SUCCESS);
         return connection;
     } catch (error) {
-        debugger
-
         const { code } = error;
 
         if (code == 8000) {

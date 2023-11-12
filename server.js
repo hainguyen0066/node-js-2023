@@ -6,16 +6,19 @@ import {
     studentsRouter
 } from './routers/index.js';
 import connect from './database/database.js';
+import checkToken from './authentication/auth.js';
 
-const port = process.env.PORT;
 const app = express();
+// middleware
+app.use(checkToken);
 app.use(express.json());
 
-// middleware
+const port = process.env.PORT;
+
 app.use('/users', usesrRouter);
 app.use('/students', studentsRouter);
 
-app.listen(port || 3000, async () => {
+app.listen(port, async () => {
     connect();
     console.log(`listening on port: ${port}`);
 });

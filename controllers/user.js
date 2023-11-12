@@ -6,6 +6,7 @@ import Exception from '../exceptions/Exception.js';
 
 const login = async (req, res) => {
 	const errors = validationResult(req);
+
 	if (!errors.isEmpty()) {
 		return res.status(HttpStatusCode.BAD_REQUEST).json({
 			errors: errors.array()
@@ -13,12 +14,18 @@ const login = async (req, res) => {
 	}
 	const { email, password } = req.body;
 	// call repository
-	await userRepository.login({ email, password });
+	try {
+		let existingUser = await userRepository.login({ email, password });
 
-	res.status(HttpStatusCode.OK).json({
-		message: 'Login successful',
-		data: 'details user'
-	});
+		res.status(HttpStatusCode.OK).json({
+			message: 'Login successful',
+			data: existingUser
+		});
+	} catch (exception) {
+		return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+			message: exception.toString()
+		});
+	}
 };
 
 const myEvent = new EventEmitter();
@@ -44,7 +51,7 @@ const register = async (req, res) => {
 			message: 'Register successful',
 			data: user
 		});
-    } catch (exception) {
+	} catch (exception) {
 		res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
 			message: exception.toString()
 		});

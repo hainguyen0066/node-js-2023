@@ -1,17 +1,18 @@
 import express from 'express';
+const router = express.Router();
 import {
-    userController,
     studentController,
 } from '../controllers/index.js';
 
-const router = express.Router();
 
 router.get('/', studentController.getAllStudents);
 
-router.get('/:id', studentController.getStudentByid)
+router.get('/:id', studentController.getStudentById);
 
 router.post('/', studentController.insertStudent);
 // patch insert or creare new student
 router.patch('/', studentController.updateStudent)
+
+router.post('/generateFakeStudents', studentController.generateFakeStudents);
 
 export default router;
